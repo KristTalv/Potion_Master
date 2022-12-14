@@ -15,11 +15,11 @@ public class Garden : MonoBehaviour
     public GameObject herbD;
     public GameObject herbE;
 
+    public GameObject weed_Prefab; // Weed
+    private Array testArrayWeed;
+    private int weedCaunt = 0;
 
-    public GameObject g_spawn_weed;
-    private GameObject weed;
-
-    private float wateringPlantsScore = 0; // watering the plants
+    private float wateringPlantsScore = 0; // Watering the plants
 
     public UI_Sleep_Button sleepButtonScript; // Sleep button script
 
@@ -27,66 +27,60 @@ public class Garden : MonoBehaviour
     public int minRandom = -10;
     private int randomX;
 
-    //private bool spawn_point_Free = true; // New Herbs should spawn only if conditions are true
-
-    private List<GameObject> g_spawnHerbs = new List<GameObject>(5); // herbs
-
-    private List<GameObject> weedCaunter = new List<GameObject>();
+    private List<GameObject> herbListG = new List<GameObject>(5); // Herb list
 
     // Start is called before the first frame update
     void Start()
     {
-
-        
-        g_spawnHerbs.Add(herbA);
-        g_spawnHerbs.Add(herbB);
-        g_spawnHerbs.Add(g_spawn_weed);
-        //g_spawnHerbs.Add(g_spawn_weed);
-        //g_spawnHerbs.Add(g_spawn_weed);
-        //g_spawnHerbs.Add(herbD);
-        //g_spawnHerbs.Add(herbE);
-
-        spawn_Herbs();
-       
+        createHerbList();
+        spawn_Herbs();   
     }
-    
-    
+
+    private void createHerbList()
+    {
+        herbListG.Add(herbA);
+        herbListG.Add(herbB);
+        herbListG.Add(weed_Prefab);
+    }
+
     public void spawn_Herbs()
     {
-        
-
+        countWeeds();
         SetWateringScore();
+   
+        if (weedCaunt > 2)
+        {
+            herbListG.Add(weed_Prefab);
+        }
+        if (wateringPlantsScore > 10 && !herbListG.Contains(herbC) && weedCaunt < 1)
+        {
+            herbListG.Add(herbC); 
+        }
+        if (wateringPlantsScore > 20 && !herbListG.Contains(herbD) && weedCaunt < 1)
+        {
+            herbListG.Add(herbD);
+        }
+        if (wateringPlantsScore > 30 && !herbListG.Contains(herbE) && weedCaunt < 1)
+        {
+            herbListG.Add(herbE);
+        }
 
-        if (weedCaunter.Count > 5)
-        {
-            g_spawnHerbs.Clear();
-        }
-        if (wateringPlantsScore > 30 && !g_spawnHerbs.Contains(herbD))
-        {
-            g_spawnHerbs.Add(herbD); 
-        }
-        if (wateringPlantsScore > 50 && !g_spawnHerbs.Contains(herbE))
-        {
-            g_spawnHerbs.Add(herbE);
-        }
-
-        foreach(GameObject @object in g_spawnHerbs)
+        foreach (GameObject @object in herbListG)
         {
             randomX = Random.Range(minRandom, manxRandom);
-            Instantiate(@object, new Vector3(randomX, 0.5f, 0), gameObject.transform.rotation);
-
+            Instantiate(@object, new Vector3(randomX, 0.5f, 0), @object.transform.rotation);
         }
-
-        weed = GameObject.FindWithTag("Weed");
-        weedCaunter.Add(weed);
-
     }
 
+    private int countWeeds()
+    {
+        testArrayWeed = GameObject.FindGameObjectsWithTag("Weed");
+        weedCaunt = testArrayWeed.Length;
+        return weedCaunt;       
+    }
 
     public void SetWateringScore()
     {
         wateringPlantsScore = sleepButtonScript.CalculateWateringScore();
     }
-
-
 }

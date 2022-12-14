@@ -6,17 +6,19 @@ using UnityEngine.UI;
 
 public class Move_Camer : MonoBehaviour
 {
+    // Buttons
     public UI_Buttons uI_Buttons;
+
+    // Destination points
     public GameObject destinationPoint;
     public GameObject startDestinationPoint;
-    public float moveSpeed = 5.0f;
 
+    // Speed
+    public float moveSpeed = 5.0f;
 
     // Update is called once per frame
     void Update()
-    {
-
-        
+    {     
         if (uI_Buttons.buttonState == true)
         {
             Move_Camera_ToRoom();
@@ -25,13 +27,6 @@ public class Move_Camer : MonoBehaviour
         {
             Move_Camera_Start();
         }
-
-
-
-
-
-
-
     }
 
     private void Move_Camera_ToRoom()

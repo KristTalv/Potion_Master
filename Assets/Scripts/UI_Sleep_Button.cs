@@ -13,6 +13,9 @@ public class UI_Sleep_Button : MonoBehaviour
     public GameObject wateringCanScript; //Scripts
     public GameObject gardenScript;
 
+    public GameObject fadeIn; // When sleeping we get fade in and out
+    private IEnumerator turnOfSleep;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,7 @@ public class UI_Sleep_Button : MonoBehaviour
     void pleaseSleep()
     {
 
+
         CalculateWateringScore();
 
         // Call here the Garden script and needed methods.
@@ -37,6 +41,16 @@ public class UI_Sleep_Button : MonoBehaviour
         garden.spawn_Herbs();
 
         cauntDays(); // Update the number of days in UI.
+
+        fadeIn.SetActive(true);
+        turnOfSleep = WaitAndWakeUp(2.5f);
+        StartCoroutine(turnOfSleep);
+    }
+    private IEnumerator WaitAndWakeUp(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        fadeIn.SetActive(false);
+
     }
 
     public float CalculateWateringScore()
@@ -45,7 +59,11 @@ public class UI_Sleep_Button : MonoBehaviour
         wateringCan = wateringCanScript.GetComponent<WateringCan>();
 
         float wateringScore = wateringCan.totalDistance;
-        //sDebug.Log("Watering dis:" + wateringScore);
+        if(numDay >= 1)
+        {
+            wateringScore = wateringScore - 10;
+        }
+        Debug.Log("Watering score: " + wateringScore);
         return wateringScore;
     }
     // Update the number of days in UI.

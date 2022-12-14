@@ -5,17 +5,21 @@ using UnityEngine;
 
 public class WateringCan : MonoBehaviour
 {
-    private GameObject wateringObject;
+    private GameObject wateringObject; // wateringcan object
 
     private bool boolean_pooringWater = false;
 
-    public ParticleSystem pourWaterParticle;
+    public ParticleSystem pourWaterParticle; // Vfx
+    public ParticleSystem idleWaterParticle;
+    public AudioSource soundWatering; // Sfx
 
-    public float totalDistance = 0;
+    public float totalDistance = 0; // Waterin score
     public float startPointWC;
     public bool record = false;
     private Vector3 previousLoc;
 
+    public GameObject respawnPoint;
+    private float reSpeed = 10f;
 
 
     // Start is called before the first frame update
@@ -23,7 +27,7 @@ public class WateringCan : MonoBehaviour
     {
         record = false;
         startPointWC += Vector3.Distance(transform.position, previousLoc);
-
+        idleWaterParticle.Play();
     }
 
     // Update is called once per frame
@@ -33,8 +37,10 @@ public class WateringCan : MonoBehaviour
         {
             RecordDistance();
         }
-        Watering();
-
+        if(transform.position.y < -0.6)
+        {
+            transform.position = Vector3.Lerp(gameObject.transform.position, respawnPoint.transform.position, reSpeed * Time.deltaTime);
+        }
 
     }
 
@@ -53,11 +59,11 @@ public class WateringCan : MonoBehaviour
             rotationVector.z = 45;
             transform.rotation = Quaternion.Euler(rotationVector);
 
-
             record = true;
             boolean_pooringWater = true;
+            idleWaterParticle.Stop();
             pourWaterParticle.Play();
-
+            soundWatering.Play();
 
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1) && boolean_pooringWater == true)
@@ -66,12 +72,20 @@ public class WateringCan : MonoBehaviour
             rotationVector.z = 0;
             transform.rotation = Quaternion.Euler(rotationVector);
 
-
             boolean_pooringWater = false;
             record = false;
-            pourWaterParticle.Stop();;
-
+            pourWaterParticle.Stop();
+            soundWatering.Stop();
+            idleWaterParticle.Play();
         }
 
     }
+    void OnMouseDrag()
+    {
+        Watering();
+        float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+        gameObject.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+
+    }
+
 }

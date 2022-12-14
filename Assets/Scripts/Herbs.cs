@@ -35,10 +35,10 @@ public class Herbs : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit)) // Investigates where the click happened
+            if (Physics.Raycast(ray, out hit))
             {
 
-                if (hit.transform.tag == "Herb") // Here sees if the cliced object has Herb tag
+                if (hit.transform.tag == "Herb") 
                 {
                     pickUpSound.Play(); //SFX
 
@@ -48,41 +48,34 @@ public class Herbs : MonoBehaviour
                     //  and finally destroy object
                     if(hit.transform.gameObject.name == herb_A.name || hit.transform.gameObject.name == herb_A.name +  "(Clone)")
                     {
-
-                        
-                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_A.transform.position, spawnPoint_A.transform.rotation);
+                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_A.transform.position, hit.transform.rotation);
                         herbClone.tag = "Craft";
                         Destroy(hit.transform.gameObject);
                     }
                     else if (hit.transform.gameObject.name == herb_B.name || hit.transform.gameObject.name == herb_B.name + "(Clone)")
-                    {
-                        
-                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_B.transform.position, spawnPoint_B.transform.rotation);
+                    {                      
+                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_B.transform.position, hit.transform.rotation);
                         herbClone.tag = "Craft";
                         Destroy(hit.transform.gameObject);
                     }
                     else if (hit.transform.gameObject.name == herb_C.name || hit.transform.gameObject.name == herb_C.name + "(Clone)")
-                    {
-                       
-                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_C.transform.position, spawnPoint_C.transform.rotation);
+                    {                       
+                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_C.transform.position, hit.transform.rotation);
                         herbClone.tag = "Craft";
                         Destroy(hit.transform.gameObject);
                     }
                     else if (hit.transform.gameObject.name == herb_D.name || hit.transform.gameObject.name == herb_D.name + "(Clone)")
-                    {
-                        
-                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_C.transform.position, spawnPoint_C.transform.rotation);
+                    {                      
+                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_C.transform.position, hit.transform.rotation);
                         herbClone.tag = "Craft";
                         Destroy(hit.transform.gameObject);
                     }
                     else if (hit.transform.gameObject.name == herb_E.name || hit.transform.gameObject.name == herb_E.name + "(Clone)")
-                    {
-                        
-                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_C.transform.position, spawnPoint_C.transform.rotation);
+                    {                       
+                        herbClone = GameObject.Instantiate(hit.transform.gameObject, spawnPoint_C.transform.position, hit.transform.rotation);
                         herbClone.tag = "Craft";
                         Destroy(hit.transform.gameObject);
                     }
-
 
                 }
                 if (hit.transform.tag == "Weed")
